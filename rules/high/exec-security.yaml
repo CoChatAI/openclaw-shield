@@ -1,0 +1,34 @@
+id: exec.security_full
+severity: high
+title: "Exec runs all commands without approval"
+description: >
+  tools.exec.security is 'full' or tools.exec.ask is 'off'. Commands execute
+  on the host without any approval gate.
+recommendation: >
+  Set tools.exec.security to 'allowlist' or 'deny', and tools.exec.ask to
+  'on-miss' or 'always'.
+config_path: "tools.exec.security, tools.exec.ask"
+auto_fixable: true
+fix:
+  tools:
+    exec:
+      security: allowlist
+      ask: on-miss
+tags:
+  - tools
+  - exec
+  - approval
+mitigates_cwes: ["CWE-78", "CWE-77"]
+mitigates_label: "Arbitrary command execution without approval"
+check:
+  type: cross_field
+  conditions:
+    - path: tools.exec.security
+      op: eq
+      value: full
+    - path: tools.deny
+      op: not_contains
+      value: exec
+    - path: tools.deny
+      op: not_contains
+      value: "group:runtime"

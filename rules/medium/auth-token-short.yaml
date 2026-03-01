@@ -1,0 +1,19 @@
+id: auth.token_short
+severity: medium
+title: "Gateway auth credential is short (< 32 chars)"
+description: >
+  The gateway auth token or password is shorter than 32 characters. Short
+  credentials are easier to brute-force.
+recommendation: >
+  Use a random token of at least 32 characters.
+  Run: openclaw doctor --generate-gateway-token
+config_path: gateway.auth.token
+auto_fixable: false
+tags:
+  - auth
+  - credential
+  - brute-force
+check:
+  type: string_length
+  path: gateway.auth.token
+  min: 32

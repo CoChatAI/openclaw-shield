@@ -1,0 +1,98 @@
+# OpenClaw Shield Rule Schema v1
+#
+# Each rule is a YAML file with the following structure.
+# Rules are loaded from rules/{severity}/*.yaml
+#
+# Contributing: See CONTRIBUTING.md for how to add new rules.
+
+# Required fields:
+#   id:             Unique identifier (e.g. "tools.gateway_tool_enabled")
+#   severity:       critical | high | medium | low | info
+#   title:          Short human-readable title
+#   description:    Detailed explanation of the risk
+#   recommendation: What to do about it
+#   config_path:    Comma-separated dot-paths inspected (for display)
+#   auto_fixable:   Whether fix can be applied via config.patch
+#   check:          The check definition (see below)
+#
+# Optional fields:
+#   fix:            Config.patch payload to fix this finding
+#   tags:           List of tags for filtering
+
+# Check types:
+#
+# value_equals:
+#   Fires when config value at `path` does NOT equal `value`.
+#   Set `invert: true` to fire when it DOES equal.
+#   path: string
+#   value: any
+#   invert: bool (default false)
+#
+# value_in_set:
+#   Fires when config value at `path` is NOT in `values` set.
+#   Set `invert: true` to fire when it IS in the set.
+#   path: string
+#   values: list
+#   invert: bool (default false)
+#
+# value_not_in_list:
+#   Fires when `value` is NOT present in the array at `path`.
+#   path: string (to an array)
+#   value: any
+#
+# truthy:
+#   Fires when value at `path` is truthy.
+#   Set `invert: true` to fire when falsy/absent.
+#   path: string
+#   invert: bool (default false)
+#
+# key_exists:
+#   Fires when key at `path` exists.
+#   Set `invert: true` to fire when absent.
+#   path: string
+#   invert: bool (default false)
+#
+# string_length:
+#   Fires when string at `path` has length < min or > max.
+#   path: string
+#   min: int (optional)
+#   max: int (optional)
+#
+# string_match:
+#   Fires when string at `path` matches regex `pattern`.
+#   Set `invert: true` to fire when it does NOT match.
+#   path: string
+#   pattern: string (regex)
+#   invert: bool (default false)
+#
+# cross_field:
+#   Fires when ALL conditions are true simultaneously.
+#   conditions: list of { path, op, value? }
+#   Operators: eq, ne, in, not_in, truthy, falsy, absent, contains, not_contains
+#
+# iterate_map:
+#   Iterates over entries in a dict at `path`.
+#   Fires entry_check against each value.
+#   path: string
+#   skip_keys: list (keys to skip)
+#   entry_check: check definition (relative paths)
+#
+# scan_keys:
+#   Recursively scans config keys matching `pattern`.
+#   Fires when matching keys have truthy values.
+#   path: string (optional, default root)
+#   pattern: string (regex for key names)
+#   recursive: bool (default false)
+#   value_truthy: bool
+#
+# url_check:
+#   Iterates entries in a dict, checks URL field against trusted domains.
+#   Fires for entries with URLs not matching any trusted domain.
+#   path: string
+#   url_field: string
+#   trusted_domains: list
+#   skip_keys: list
+#
+# custom:
+#   Falls back to a named function for complex logic.
+#   function: string (registered function name)

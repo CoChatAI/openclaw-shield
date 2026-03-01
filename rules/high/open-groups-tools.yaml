@@ -1,0 +1,37 @@
+id: channels.open_groups_with_tools
+severity: high
+title: "Open groups with runtime tools enabled"
+description: >
+  One or more channels have open groupPolicy and runtime tools (exec, process)
+  are available. Any group member can trigger tool execution via the bot.
+recommendation: >
+  Set groupPolicy to 'allowlist' on affected channels or restrict tools via
+  tools.deny.
+config_path: "channels.*.groupPolicy"
+auto_fixable: false
+tags:
+  - channels
+  - groups
+  - access-control
+  - tools
+check:
+  type: iterate_map
+  path: channels
+  skip_keys:
+    - defaults
+    - modelByChannel
+  entry_check:
+    type: cross_field
+    conditions:
+      - path: groupPolicy
+        op: eq
+        value: open
+      - path: $root.tools.profile
+        op: in
+        value:
+          - null
+          - full
+          - coding
+      - path: $root.tools.deny
+        op: not_contains
+        value: "group:runtime"

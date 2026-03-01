@@ -1,0 +1,53 @@
+label: "Auto-denied"
+description: "Blocked immediately — matches known-dangerous commands"
+
+patterns:
+  # -- Destructive file operations --
+  - pattern: "rm\\s+(-[rf]+\\s+)?/(?!tmp\\b)"
+    description: "Destructive rm on root filesystem"
+  - pattern: "rm\\s+(-[rf]+\\s+)?~"
+    description: "Destructive rm on home directory"
+  - pattern: "mkfs\\."
+    description: "Filesystem format command"
+  - pattern: "dd\\s+.*of=/dev/"
+    description: "Direct device write"
+
+  # -- Credential / secret theft --
+  - pattern: "cat\\s+.*\\.ssh/"
+    description: "Reading SSH keys"
+  - pattern: "cat\\s+.*\\.env\\b"
+    description: "Reading .env file"
+  - pattern: "cat\\s+.*\\.openclaw/.*\\.(json|env)"
+    description: "Reading OpenClaw state/config"
+
+  # -- Remote code execution / exfiltration --
+  - pattern: "curl\\s+.*\\|\\s*(sh|bash|zsh)"
+    description: "Curl pipe to shell"
+  - pattern: "wget\\s+.*\\|\\s*(sh|bash|zsh)"
+    description: "Wget pipe to shell"
+  - pattern: "curl\\s+.*(-d\\s+@|--data.*@)"
+    description: "Curl file upload (potential exfil)"
+  - pattern: "nc\\s+-.*-e"
+    description: "Netcat reverse shell"
+  - pattern: "python.*-c.*import\\s+socket"
+    description: "Python reverse shell pattern"
+  - pattern: "base64\\s+.*\\|\\s*(sh|bash)"
+    description: "Base64 decode to shell"
+
+  # -- System modification --
+  - pattern: "chmod\\s+777\\s"
+    description: "World-writable permission"
+  - pattern: "chmod\\s+\\+s\\s"
+    description: "Setuid permission"
+  - pattern: "chown\\s+root\\s"
+    description: "Changing ownership to root"
+  - pattern: "crontab\\s+(-[er]\\s+)?[^-]"
+    description: "Modifying system crontab"
+  - pattern: "systemctl\\s+(enable|disable|mask)\\s"
+    description: "Modifying systemd services"
+
+  # -- Network recon / lateral movement --
+  - pattern: "nmap\\s+"
+    description: "Port scanning"
+  - pattern: "scp\\s+.*:"
+    description: "SCP to remote host"

@@ -1,0 +1,27 @@
+{
+  "tools": {
+    "elevated": {
+      "enabled": true
+    }
+  },
+  "agents": {
+    "defaults": {
+      "sandbox": {
+        "mode": "off"
+      }
+    }
+  },
+  "channels": {
+    "whatsapp": {
+      "dmPolicy": "open"
+    },
+    "telegram": {
+      "dmPolicy": "pairing"
+    }
+  },
+  "discovery": {
+    "mdns": {
+      "mode": "full"
+    }
+  }
+}

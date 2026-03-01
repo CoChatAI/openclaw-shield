@@ -1,0 +1,40 @@
+id: coding_safe
+name: "Coding Safe"
+description: >-
+  Balanced security for coding agents. Keeps filesystem and exec
+  tools but restricts them to the workspace. Denies dangerous
+  control-plane tools. Enables exec approvals and sandboxing for
+  non-main sessions.
+
+impact:
+  - "Exec and file tools restricted to workspace only"
+  - "Exec approvals required on allowlist miss"
+  - "No config modification (gateway tool denied)"
+  - "No cron jobs or session spawning"
+  - "No elevated/host exec"
+  - "Non-main sessions sandboxed"
+
+patch:
+  tools:
+    profile: coding
+    deny:
+      - gateway
+      - cron
+      - sessions_spawn
+    fs:
+      workspaceOnly: true
+    exec:
+      security: allowlist
+      ask: on-miss
+      applyPatch:
+        workspaceOnly: true
+    elevated:
+      enabled: false
+    loopDetection:
+      enabled: true
+  agents:
+    defaults:
+      sandbox:
+        mode: non-main
+  session:
+    dmScope: per-channel-peer

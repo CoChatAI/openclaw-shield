@@ -1,0 +1,35 @@
+id: skill.blocklist.clawhavoc
+type: skill_blocklist
+severity: critical
+title: "ClawHavoc malware campaign"
+description: >
+  Coordinated campaign that planted 335+ malicious skills on ClawHub
+  disguised as crypto wallets, YouTube utilities, and workspace integrations.
+  Skills deliver Atomic macOS Stealer (AMOS) via base64-encoded scripts
+  from glot.io or password-protected ZIPs from GitHub.
+recommendation: "Remove this skill immediately and rotate all credentials on the host."
+config_path: ""
+auto_fixable: false
+cwe: "CWE-506"
+references:
+  - https://blog.koi.security/clawhavoc-campaign
+  - https://blog.barrack.ai/openclaw-security-vulnerabilities-2026/
+tags: [skill, malware, clawhavoc, amos]
+confidence: high
+check:
+  type: skill_blocklist
+  indicators:
+    c2_ips:
+      - "91.92.242.30"
+    authors:
+      - "clawhub"
+      - "clawhub1"
+      - "clawhubb"
+      - "clawhubcli"
+      - "zaycv"
+      - "sakaen736jih"
+    domains:
+      - "glot.io"
+    skill_names:
+      - "clawhub"
+      - "clawhubcli"

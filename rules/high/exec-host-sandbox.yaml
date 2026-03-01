@@ -1,0 +1,38 @@
+id: exec.host_sandbox_no_sandbox
+severity: high
+title: "exec.host='sandbox' but sandbox is off — runs on host"
+description: >
+  tools.exec.host defaults to 'sandbox', but sandbox mode is 'off'. OpenClaw
+  now fails closed (exec errors) instead of silently running on the host.
+  However, older versions may silently fall through to host execution.
+recommendation: >
+  Either enable sandboxing (agents.defaults.sandbox.mode: 'non-main') or
+  explicitly set tools.exec.host to 'gateway' with proper approval settings.
+config_path: "tools.exec.host, agents.defaults.sandbox.mode"
+auto_fixable: true
+fix:
+  agents:
+    defaults:
+      sandbox:
+        mode: non-main
+tags:
+  - exec
+  - sandbox
+  - host-security
+mitigates_cwes: ["CWE-78", "CWE-250"]
+mitigates_label: "Command injection when sandbox fails to activate"
+check:
+  type: cross_field
+  conditions:
+    - path: tools.exec.host
+      op: eq
+      value: sandbox
+    - path: agents.defaults.sandbox.mode
+      op: eq
+      value: "off"
+    - path: tools.deny
+      op: not_contains
+      value: exec
+    - path: tools.deny
+      op: not_contains
+      value: "group:runtime"

@@ -1,0 +1,35 @@
+id: sandbox.mode_off
+severity: critical
+title: "Sandboxing disabled — exec runs on host"
+description: >
+  Sandbox mode is 'off' (default) and exec tools are not denied. All command
+  execution runs directly on the gateway host. A prompt injection can execute
+  arbitrary commands.
+recommendation: >
+  Set agents.defaults.sandbox.mode to 'non-main' or 'all', or deny exec tools
+  via tools.deny: ['exec', 'process'].
+config_path: agents.defaults.sandbox.mode
+auto_fixable: true
+fix:
+  agents:
+    defaults:
+      sandbox:
+        mode: non-main
+tags:
+  - sandbox
+  - exec
+  - host-security
+mitigates_cwes: ["CWE-78", "CWE-250"]
+mitigates_label: "Command injection and container escape"
+check:
+  type: cross_field
+  conditions:
+    - path: agents.defaults.sandbox.mode
+      op: eq
+      value: "off"
+    - path: tools.deny
+      op: not_contains
+      value: exec
+    - path: tools.deny
+      op: not_contains
+      value: "group:runtime"

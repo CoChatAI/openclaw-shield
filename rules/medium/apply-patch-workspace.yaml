@@ -1,0 +1,28 @@
+id: apply_patch.not_workspace_only
+severity: medium
+title: "apply_patch can write outside workspace"
+description: >
+  tools.exec.applyPatch.workspaceOnly is false. The apply_patch tool can write
+  and delete files anywhere on the filesystem.
+recommendation: >
+  Set tools.exec.applyPatch.workspaceOnly to true.
+config_path: tools.exec.applyPatch.workspaceOnly
+auto_fixable: true
+fix:
+  tools:
+    exec:
+      applyPatch:
+        workspaceOnly: true
+tags:
+  - tools
+  - apply-patch
+  - filesystem
+  - workspace
+check:
+  type: cross_field
+  conditions:
+    - path: tools.exec.applyPatch.enabled
+      op: truthy
+    - path: tools.exec.applyPatch.workspaceOnly
+      op: eq
+      value: false

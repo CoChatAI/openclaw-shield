@@ -1,0 +1,28 @@
+id: messaging_safe
+name: "Messaging Safe"
+description: >-
+  Restricted to messaging tools only. Denies all runtime,
+  filesystem, and automation tools. Suitable for bots that
+  only need to converse and manage sessions.
+
+impact:
+  - "No command execution"
+  - "No file access"
+  - "No automation or cron"
+  - "Only messaging and session management tools"
+  - "Loop detection enabled"
+
+patch:
+  tools:
+    profile: messaging
+    deny:
+      - "group:automation"
+      - "group:runtime"
+      - "group:fs"
+      - sessions_spawn
+    loopDetection:
+      enabled: true
+      warningThreshold: 10
+      criticalThreshold: 20
+  session:
+    dmScope: per-channel-peer

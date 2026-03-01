@@ -1,0 +1,24 @@
+id: tools.no_loop_detection
+severity: high
+title: "Tool loop detection disabled"
+description: >
+  tools.loopDetection.enabled is false or absent (default). Without loop
+  detection, a stuck agent can execute the same tool call repeatedly, wasting
+  tokens and potentially causing damage.
+recommendation: >
+  Set tools.loopDetection.enabled to true with reasonable thresholds
+  (warning: 10, critical: 20).
+config_path: tools.loopDetection.enabled
+auto_fixable: true
+fix:
+  tools:
+    loopDetection:
+      enabled: true
+tags:
+  - tools
+  - loop-detection
+  - safety
+check:
+  type: truthy
+  path: tools.loopDetection.enabled
+  invert: true

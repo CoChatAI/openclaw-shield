@@ -1,0 +1,31 @@
+id: dm_policy_open
+severity: critical
+title: "Open DM policy — anyone can message the bot"
+description: >
+  One or more channels have dmPolicy='open'. Anyone can message the bot
+  directly without pairing or allowlist approval.
+recommendation: >
+  Set dmPolicy to 'pairing' (recommended) or 'allowlist' on each channel.
+config_path: channels.*.dmPolicy
+auto_fixable: true
+fix:
+  channels:
+    defaults:
+      dmPolicy: pairing
+tags:
+  - channels
+  - dm-policy
+  - access-control
+mitigates_cwes: ["CWE-306", "CWE-345", "CWE-285", "CWE-863"]
+mitigates_label: "Unauthenticated message handling and webhook forgery"
+check:
+  type: iterate_map
+  path: channels
+  skip_keys:
+    - defaults
+    - modelByChannel
+  entry_check:
+    type: value_equals
+    path: dmPolicy
+    value: open
+    invert: true

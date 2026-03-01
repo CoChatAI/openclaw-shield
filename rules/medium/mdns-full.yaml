@@ -1,0 +1,23 @@
+id: discovery.mdns_full
+severity: medium
+title: "mDNS full mode — broadcasting sensitive info"
+description: >
+  discovery.mdns.mode is 'full'. This broadcasts cliPath and sshPort via mDNS,
+  revealing install paths and SSH availability to anyone on the local network.
+recommendation: >
+  Set discovery.mdns.mode to 'minimal' or 'off'.
+config_path: discovery.mdns.mode
+auto_fixable: true
+fix:
+  discovery:
+    mdns:
+      mode: minimal
+tags:
+  - discovery
+  - mdns
+  - information-disclosure
+check:
+  type: value_equals
+  path: discovery.mdns.mode
+  value: full
+  invert: true

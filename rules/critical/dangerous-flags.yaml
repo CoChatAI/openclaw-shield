@@ -1,0 +1,19 @@
+id: dangerous_flags
+severity: critical
+title: "Dangerous flag enabled"
+description: >
+  One or more keys starting with 'dangerous' are truthy. Dangerous flags are
+  explicit break-glass tradeoffs that weaken security defaults.
+recommendation: >
+  Disable all dangerous* flags unless you have a specific, documented need.
+config_path: "**dangerous*"
+auto_fixable: true
+tags:
+  - dangerous-flags
+  - break-glass
+  - security-override
+check:
+  type: scan_keys
+  pattern: "^dangerous"
+  recursive: true
+  value_truthy: true

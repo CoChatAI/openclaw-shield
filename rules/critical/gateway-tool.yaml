@@ -1,0 +1,26 @@
+id: tools.gateway_tool_enabled
+severity: critical
+title: "Gateway tool not denied — agent can modify config"
+description: >
+  The 'gateway' tool is not in tools.deny. This tool gives the agent RPC
+  access to config.patch and config.apply. A prompt injection can undo ALL
+  security hardening with a single config.patch call.
+recommendation: >
+  Add 'gateway' to tools.deny. This is the single most important security
+  setting.
+config_path: tools.deny
+auto_fixable: true
+fix:
+  tools:
+    deny:
+      - gateway
+tags:
+  - tools
+  - gateway
+  - config-integrity
+mitigates_cwes: ["CWE-918", "CWE-284"]
+mitigates_label: "Config manipulation and SSRF via gateway tool"
+check:
+  type: value_not_in_list
+  path: tools.deny
+  value: gateway

@@ -1,0 +1,32 @@
+id: gateway.bind_no_auth
+severity: critical
+title: "Gateway exposed without authentication"
+description: >
+  Gateway is bound to a non-loopback address but has no authentication
+  configured. Anyone on the network can connect and control the gateway.
+recommendation: >
+  Set gateway.auth.mode to 'token' or 'password' with a strong credential
+  (32+ characters). Prefer loopback bind with SSH tunnel or Tailscale for
+  remote access.
+config_path: "gateway.bind, gateway.auth"
+auto_fixable: false
+tags:
+  - gateway
+  - authentication
+  - network-exposure
+mitigates_cwes: ["CWE-306"]
+mitigates_label: "Unauthenticated gateway access"
+check:
+  type: cross_field
+  conditions:
+    - path: gateway.bind
+      op: ne
+      value: loopback
+    - path: gateway.auth.mode
+      op: in
+      value:
+        - null
+        - "none"
+        - false
+    - path: gateway.auth.token
+      op: falsy

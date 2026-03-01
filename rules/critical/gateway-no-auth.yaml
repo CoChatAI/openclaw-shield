@@ -1,0 +1,27 @@
+id: gateway.no_auth
+severity: critical
+title: "Gateway authentication disabled"
+description: >
+  No authentication is configured on the gateway. Any process on the host
+  (or network, if non-loopback) can control the gateway.
+recommendation: >
+  Set gateway.auth.mode to 'token' with a strong random token.
+  Run: openclaw doctor --generate-gateway-token
+config_path: gateway.auth.mode
+auto_fixable: false
+tags:
+  - gateway
+  - authentication
+mitigates_cwes: ["CWE-306"]
+mitigates_label: "Unauthenticated gateway access"
+check:
+  type: cross_field
+  conditions:
+    - path: gateway.auth.mode
+      op: in
+      value:
+        - null
+        - "none"
+        - false
+    - path: gateway.auth.token
+      op: falsy

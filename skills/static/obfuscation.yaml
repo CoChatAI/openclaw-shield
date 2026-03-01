@@ -1,0 +1,38 @@
+id: skill.obfuscation
+type: skill_check
+severity: high
+title: "Code obfuscation techniques in skill code"
+description: >
+  Skill source code uses encoding, decoding, or obfuscation techniques
+  commonly associated with malware. Legitimate skills have no reason to
+  hide their logic behind base64 encoding, hex escape sequences, or
+  dynamic code construction from character codes. This is a strong
+  indicator of malicious intent.
+recommendation: >
+  Review the obfuscated code carefully. Decode any base64 or hex-encoded
+  strings to understand what the skill actually does. If the skill author
+  cannot justify the obfuscation, do not install it.
+config_path: ""
+auto_fixable: false
+cwe: "CWE-506"
+tags: [skill, obfuscation, malware, steganography]
+confidence: medium
+check:
+  type: code_pattern
+  patterns:
+    - "atob\\s*\\("
+    - "btoa\\s*\\("
+    - "Buffer\\.from\\s*\\(.*base64"
+    - "eval\\s*\\(\\s*atob"
+    - "eval\\s*\\(\\s*Buffer"
+    - "String\\.fromCharCode"
+    - "\\\\x[0-9a-fA-F]{2}\\\\x[0-9a-fA-F]{2}\\\\x[0-9a-fA-F]{2}"
+    - "unescape\\s*\\("
+    - "decodeURIComponent\\s*\\(\\s*escape"
+    - "base64\\.b64decode\\s*\\("
+    - "base64\\.decodebytes\\s*\\("
+    - "codecs\\.decode\\s*\\("
+    - "\\\\u[0-9a-fA-F]{4}\\\\u[0-9a-fA-F]{4}\\\\u[0-9a-fA-F]{4}"
+    - "charCodeAt"
+    - "fromCodePoint"
+  file_patterns: ["*.ts", "*.js", "*.mjs", "*.cjs", "*.py"]

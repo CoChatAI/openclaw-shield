@@ -1,0 +1,60 @@
+{
+  "name": "@cochatai/openclaw-shield",
+  "version": "0.1.0",
+  "description": "Security auditor and hardening tool for OpenClaw gateways",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "openclaw-shield": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "rules",
+    "patterns",
+    "profiles",
+    "vulnerabilities",
+    "skills",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src/",
+    "test": "node --experimental-vm-modules node_modules/.bin/vitest run",
+    "test:watch": "node --experimental-vm-modules node_modules/.bin/vitest",
+    "start": "node dist/cli.js"
+  },
+  "keywords": [
+    "openclaw",
+    "security",
+    "audit",
+    "hardening",
+    "ai-safety",
+    "cli"
+  ],
+  "author": "CoChat <security@cochat.ai>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cochatai/openclaw-shield.git"
+  },
+  "homepage": "https://github.com/cochatai/openclaw-shield",
+  "bugs": {
+    "url": "https://github.com/cochatai/openclaw-shield/issues"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0",
+    "yaml": "^2.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

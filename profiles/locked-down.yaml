@@ -1,0 +1,48 @@
+id: locked_down
+name: "Locked Down"
+description: >-
+  Maximum security. Mirrors OpenClaw's official hardened baseline.
+  Denies all control-plane, runtime, and filesystem tools. Forces
+  sandboxing for all sessions. Suitable for messaging-only bots
+  exposed to untrusted users.
+
+impact:
+  - "No command execution (exec, process denied)"
+  - "No file access (read, write, edit denied)"
+  - "No browser or canvas tools"
+  - "No config modification (gateway tool denied)"
+  - "All sessions sandboxed"
+  - "Only messaging and session tools remain"
+
+patch:
+  tools:
+    profile: messaging
+    deny:
+      - gateway
+      - cron
+      - sessions_spawn
+      - sessions_send
+      - "group:automation"
+      - "group:runtime"
+      - "group:fs"
+    fs:
+      workspaceOnly: true
+    exec:
+      security: deny
+      ask: always
+    elevated:
+      enabled: false
+    loopDetection:
+      enabled: true
+      warningThreshold: 5
+      criticalThreshold: 10
+      globalCircuitBreakerThreshold: 15
+  agents:
+    defaults:
+      sandbox:
+        mode: all
+  discovery:
+    mdns:
+      mode: "off"
+  session:
+    dmScope: per-channel-peer

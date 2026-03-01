@@ -1,0 +1,30 @@
+id: tools.web_fetch_enabled
+severity: low
+title: "Web fetch/search tools enabled"
+description: >
+  web_fetch and web_search are available. These tools can introduce untrusted
+  content that may contain prompt injection payloads.
+recommendation: >
+  Consider denying web_fetch/web_search for agents that handle sensitive
+  operations, or use a separate reader agent for untrusted content.
+config_path: tools.deny
+auto_fixable: false
+tags:
+  - tools
+  - web
+  - prompt-injection
+check:
+  type: cross_field
+  conditions:
+    - path: tools.deny
+      op: not_contains
+      value: web_fetch
+    - path: tools.deny
+      op: not_contains
+      value: web_search
+    - path: tools.profile
+      op: in
+      value:
+        - null
+        - full
+        - coding

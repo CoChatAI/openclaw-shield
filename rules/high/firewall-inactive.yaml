@@ -1,0 +1,38 @@
+id: firewall.inactive
+severity: high
+title: "Tool Firewall inactive — exec approvals not configured"
+description: >
+  tools.exec.ask is 'off' or not set. The CoChat tool firewall cannot
+  intercept exec requests because the gateway will not broadcast approval
+  events. Set tools.exec.ask to 'on-miss' or 'always' to enable real-time
+  tool interception.
+recommendation: >
+  Set tools.exec.ask to 'on-miss' (approvals on allowlist miss) or 'always'
+  (approve every command).
+config_path: tools.exec.ask
+auto_fixable: true
+fix:
+  tools:
+    exec:
+      ask: on-miss
+tags:
+  - tools
+  - exec
+  - firewall
+  - approval
+mitigates_cwes: ["CWE-78", "CWE-284"]
+mitigates_label: "Exec bypass without approval gating"
+check:
+  type: cross_field
+  conditions:
+    - path: tools.exec.ask
+      op: in
+      value:
+        - "off"
+        - null
+    - path: tools.deny
+      op: not_contains
+      value: exec
+    - path: tools.deny
+      op: not_contains
+      value: "group:runtime"

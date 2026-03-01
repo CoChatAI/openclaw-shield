@@ -1,0 +1,31 @@
+id: tools.cron_tool_enabled
+severity: high
+title: "Cron tool available — persistent scheduled jobs"
+description: >
+  The 'cron' tool is not denied and the tool profile allows runtime tools.
+  An agent (or prompt injection) can create scheduled jobs that persist after
+  the conversation ends.
+recommendation: >
+  Add 'cron' to tools.deny.
+config_path: tools.deny
+auto_fixable: true
+fix:
+  tools:
+    deny:
+      - cron
+tags:
+  - tools
+  - cron
+  - persistence
+check:
+  type: cross_field
+  conditions:
+    - path: tools.deny
+      op: not_contains
+      value: cron
+    - path: tools.profile
+      op: in
+      value:
+        - null
+        - full
+        - coding

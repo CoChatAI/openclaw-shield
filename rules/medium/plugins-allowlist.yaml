@@ -1,0 +1,21 @@
+id: plugins.no_allowlist
+severity: medium
+title: "Plugins without explicit allowlist"
+description: >
+  Plugins/extensions are configured without an explicit plugins.allow allowlist.
+  Plugins run in-process with the Gateway and have full host access.
+recommendation: >
+  Set plugins.allow to an explicit list of trusted plugin IDs.
+config_path: plugins.allow
+auto_fixable: false
+tags:
+  - plugins
+  - allowlist
+  - supply-chain
+check:
+  type: cross_field
+  conditions:
+    - path: plugins
+      op: truthy
+    - path: plugins.allow
+      op: absent

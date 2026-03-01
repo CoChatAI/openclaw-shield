@@ -1,0 +1,25 @@
+id: logging.redact_off
+severity: medium
+title: "Log redaction disabled"
+description: >
+  logging.redactSensitive is off or false. Sensitive values may leak into logs
+  and status output.
+recommendation: >
+  Set logging.redactSensitive to 'tools' (default).
+config_path: logging.redactSensitive
+auto_fixable: true
+fix:
+  logging:
+    redactSensitive: tools
+tags:
+  - logging
+  - redaction
+  - data-leak
+check:
+  type: cross_field
+  conditions:
+    - path: logging.redactSensitive
+      op: in
+      value:
+        - false
+        - "off"

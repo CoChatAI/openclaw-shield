@@ -1,0 +1,30 @@
+id: dm_hardened
+name: "DM Hardened"
+description: >-
+  Locks down all channel DM policies to 'pairing' and isolates
+  DM sessions per channel+peer. Does not change tool settings.
+
+impact:
+  - "All channels require pairing approval for new senders"
+  - "Each sender gets an isolated session context"
+  - "Tool settings are not modified"
+  - "Existing approved senders are unaffected"
+
+patch:
+  channels:
+    whatsapp:
+      dmPolicy: pairing
+    telegram:
+      dmPolicy: pairing
+    discord:
+      dmPolicy: pairing
+    slack:
+      dmPolicy: pairing
+    signal:
+      dmPolicy: pairing
+    imessage:
+      dmPolicy: pairing
+    bluebubbles:
+      dmPolicy: pairing
+  session:
+    dmScope: per-channel-peer

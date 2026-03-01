@@ -1,0 +1,28 @@
+id: browser.enabled_no_sandbox
+severity: medium
+title: "Browser control enabled without sandboxing"
+description: >
+  Browser tool is enabled but sandbox mode is off. Browser actions (navigate,
+  evaluate JS, etc.) execute in the gateway's browser context without isolation.
+recommendation: >
+  Enable sandboxing (agents.defaults.sandbox.mode: 'non-main') or use the
+  sandbox browser feature.
+config_path: "browser.enabled, agents.defaults.sandbox.mode"
+auto_fixable: true
+fix:
+  agents:
+    defaults:
+      sandbox:
+        mode: non-main
+tags:
+  - browser
+  - sandbox
+  - isolation
+check:
+  type: cross_field
+  conditions:
+    - path: browser.enabled
+      op: truthy
+    - path: agents.defaults.sandbox.mode
+      op: eq
+      value: "off"

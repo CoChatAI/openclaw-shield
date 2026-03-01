@@ -1,0 +1,39 @@
+id: skill.suspicious_dependencies
+type: skill_check
+severity: medium
+title: "Suspicious dependencies in skill manifest"
+description: >
+  Skill package manifest references packages with names associated with
+  typosquatting campaigns, known-malicious packages, or contains
+  install-time lifecycle scripts (postinstall/preinstall) that execute
+  arbitrary code during installation before the user can review it.
+recommendation: >
+  Verify every dependency against its official registry page. Remove
+  any typosquatted or suspicious packages. If postinstall scripts are
+  present, audit them carefully — legitimate packages rarely need them.
+config_path: ""
+auto_fixable: false
+cwe: "CWE-1357"
+tags: [skill, supply-chain, typosquatting, dependencies]
+confidence: medium
+check:
+  type: code_pattern
+  patterns:
+    # Typosquat / known-malicious package names
+    - "\"openclaw\""
+    - "\"clawhub\""
+    - "\"clawhubcli\""
+    - "\"crypto-wallet\""
+    - "\"reverse-shell\""
+    - "\"netcat\""
+    - "\"claw-hub\""
+    - "\"openclaw-cli\""
+    - "\"openclaw-utils\""
+    # Install-time script hooks (package.json)
+    - "\"postinstall\"\\s*:"
+    - "\"preinstall\"\\s*:"
+    - "\"install\"\\s*:"
+    # Python setup hooks that run arbitrary code
+    - "cmdclass"
+    - "setup\\s*\\(.*scripts\\s*="
+  file_patterns: ["package.json", "requirements.txt", "setup.py", "pyproject.toml"]

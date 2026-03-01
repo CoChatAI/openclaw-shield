@@ -1,0 +1,48 @@
+id: skill.filesystem_access
+type: skill_check
+severity: high
+title: "Sensitive filesystem access in skill code"
+description: >
+  Skill source code references sensitive filesystem paths such as SSH keys,
+  cloud credentials, password files, or environment variable accessors.
+  A malicious skill could read private keys, cloud configs, or secrets
+  from the host and exfiltrate them.
+recommendation: >
+  Skills should not access paths outside their own directory. Remove
+  references to sensitive system paths. Use the skill's declared
+  configuration for any required credentials.
+config_path: ""
+auto_fixable: false
+cwe: "CWE-22"
+tags: [skill, filesystem, path-traversal, credentials]
+confidence: medium
+check:
+  type: code_pattern
+  patterns:
+    - "~/\\.ssh"
+    - "\\.ssh/id_rsa"
+    - "\\.ssh/id_ed25519"
+    - "\\.ssh/authorized_keys"
+    - "\\.ssh/known_hosts"
+    - "~/\\.openclaw"
+    - "\\.openclaw/config"
+    - "\\.openclaw/credentials"
+    - "/etc/passwd"
+    - "/etc/shadow"
+    - "/etc/sudoers"
+    - "~/\\.aws"
+    - "\\.aws/credentials"
+    - "\\.aws/config"
+    - "~/\\.kube"
+    - "\\.kube/config"
+    - "~/\\.docker"
+    - "\\.docker/config\\.json"
+    - "~/\\.gnupg"
+    - "~/\\.gitconfig"
+    - "~/\\.netrc"
+    - "~/\\.npmrc"
+    - "~/\\.pypirc"
+    - "process\\.env"
+    - "os\\.environ"
+    - "os\\.getenv\\s*\\("
+  file_patterns: ["*.ts", "*.js", "*.mjs", "*.cjs", "*.py", "*.sh"]

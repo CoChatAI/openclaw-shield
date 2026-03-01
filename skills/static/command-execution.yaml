@@ -1,0 +1,46 @@
+id: skill.command_execution
+type: skill_check
+severity: high
+title: "Command execution primitives in skill code"
+description: >
+  Skill source code contains functions that execute shell commands or
+  dynamically evaluate code. A malicious skill could use these to run
+  arbitrary commands on the host, install malware, modify system files,
+  or establish persistence.
+recommendation: >
+  Remove all shell execution and dynamic code evaluation from the skill.
+  If the skill legitimately needs to run commands, it must use the
+  platform's sandboxed execution API instead of raw process spawning.
+config_path: ""
+auto_fixable: false
+cwe: "CWE-78"
+tags: [skill, command-injection, code-execution, rce]
+confidence: high
+check:
+  type: code_pattern
+  patterns:
+    - "child_process"
+    - "require\\(['\"]child_process['\"]\\)"
+    - "exec\\s*\\("
+    - "execSync\\s*\\("
+    - "execFile\\s*\\("
+    - "execFileSync\\s*\\("
+    - "spawn\\s*\\("
+    - "spawnSync\\s*\\("
+    - "fork\\s*\\("
+    - "os\\.system\\s*\\("
+    - "os\\.popen\\s*\\("
+    - "os\\.exec[a-z]*\\s*\\("
+    - "subprocess\\.run\\s*\\("
+    - "subprocess\\.call\\s*\\("
+    - "subprocess\\.check_output\\s*\\("
+    - "subprocess\\.Popen\\s*\\("
+    - "eval\\s*\\("
+    - "Function\\s*\\("
+    - "new\\s+Function\\s*\\("
+    - "vm\\.runInNewContext"
+    - "vm\\.runInThisContext"
+    - "vm\\.createScript"
+    - "Deno\\.run\\s*\\("
+    - "Deno\\.Command\\s*\\("
+  file_patterns: ["*.ts", "*.js", "*.mjs", "*.cjs", "*.py", "*.sh"]

@@ -1,0 +1,30 @@
+id: fs.not_workspace_only
+severity: high
+title: "Filesystem tools not restricted to workspace"
+description: >
+  tools.fs.workspaceOnly is not enabled and filesystem tools are not denied.
+  Filesystem tools (read, write, edit, apply_patch) can access files anywhere
+  the gateway process has permission, including sensitive files like
+  ~/.openclaw/ state and credentials.
+recommendation: >
+  Set tools.fs.workspaceOnly to true.
+config_path: tools.fs.workspaceOnly
+auto_fixable: true
+fix:
+  tools:
+    fs:
+      workspaceOnly: true
+tags:
+  - tools
+  - filesystem
+  - workspace
+mitigates_cwes: ["CWE-22", "CWE-200"]
+mitigates_label: "Path traversal and local file disclosure"
+check:
+  type: cross_field
+  conditions:
+    - path: tools.fs.workspaceOnly
+      op: falsy
+    - path: tools.deny
+      op: not_contains
+      value: "group:fs"

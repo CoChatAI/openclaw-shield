@@ -1,0 +1,44 @@
+id: skill.network_exfiltration
+type: skill_check
+severity: high
+title: "Network requests in skill code"
+description: >
+  Skill source code contains network request primitives (fetch, axios,
+  http.request, WebSocket, XMLHttpRequest, etc.) that could be used to
+  exfiltrate user data, conversation history, or credentials to an
+  external server controlled by the skill author.
+recommendation: >
+  Review all network calls in the skill. Skills should only communicate
+  with explicitly declared API endpoints. Remove or sandbox any
+  undeclared outbound requests.
+config_path: ""
+auto_fixable: false
+cwe: "CWE-200"
+tags: [skill, network, exfiltration, data-leak]
+confidence: medium
+check:
+  type: code_pattern
+  patterns:
+    - "fetch\\s*\\("
+    - "axios\\."
+    - "axios\\s*\\("
+    - "http\\.request\\s*\\("
+    - "https\\.request\\s*\\("
+    - "http\\.get\\s*\\("
+    - "https\\.get\\s*\\("
+    - "net\\.connect\\s*\\("
+    - "net\\.createConnection\\s*\\("
+    - "new\\s+WebSocket\\s*\\("
+    - "new\\s+XMLHttpRequest"
+    - "XMLHttpRequest\\s*\\("
+    - "urllib\\.request"
+    - "urllib3\\."
+    - "requests\\.get\\s*\\("
+    - "requests\\.post\\s*\\("
+    - "requests\\.put\\s*\\("
+    - "requests\\.patch\\s*\\("
+    - "requests\\.delete\\s*\\("
+    - "httpx\\."
+    - "aiohttp\\.ClientSession"
+    - "socket\\.socket\\s*\\("
+  file_patterns: ["*.ts", "*.js", "*.mjs", "*.cjs", "*.py", "*.sh"]

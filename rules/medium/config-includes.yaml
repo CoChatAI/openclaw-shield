@@ -1,0 +1,21 @@
+id: config_includes_present
+severity: medium
+title: "Config includes detected"
+description: >
+  This config uses $include to pull in external files. Included files may
+  override security settings after the audit reads the main config. The audit
+  inspects the resolved (merged) config, but manual review of included files
+  is recommended.
+recommendation: >
+  Review all included config files for security settings. Ensure
+  security-critical keys are set in the main config as sibling keys (which
+  override includes).
+config_path: "$include"
+auto_fixable: false
+tags:
+  - config
+  - includes
+  - supply-chain
+check:
+  type: key_exists
+  path: "$include"

@@ -1,0 +1,23 @@
+id: elevated.enabled
+severity: critical
+title: "Elevated mode enabled"
+description: >
+  tools.elevated.enabled is true. Elevated exec bypasses sandboxing and runs
+  commands directly on the gateway host. Combined with prompt injection, this
+  grants full RCE.
+recommendation: "Set tools.elevated.enabled to false."
+config_path: tools.elevated.enabled
+auto_fixable: true
+fix:
+  tools:
+    elevated:
+      enabled: false
+tags:
+  - elevated
+  - exec
+  - sandbox-bypass
+mitigates_cwes: ["CWE-78", "CWE-250", "CWE-269"]
+mitigates_label: "Privilege escalation and host exec bypass"
+check:
+  type: truthy
+  path: tools.elevated.enabled

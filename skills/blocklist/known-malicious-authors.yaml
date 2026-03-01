@@ -1,0 +1,93 @@
+id: skill.blocklist.known_malicious_authors
+type: skill_blocklist
+severity: critical
+title: "Known malicious skill authors"
+description: >
+  Skill is published by an author identified in security research as
+  distributing malware, infostealers, or backdoored skills. Sources
+  include the Snyk ToxicSkills study (2025), Bitdefender research on
+  AI coding tool supply-chain attacks (2026), and community incident
+  reports. These accounts have been confirmed to distribute credential
+  stealers, reverse shells, cryptominers, or ransomware loaders
+  disguised as legitimate developer tools.
+recommendation: >
+  Remove this skill immediately. Run a full credential rotation on any
+  machine where the skill was installed. Scan for persistence mechanisms
+  (crontabs, launchd plists, systemd services) that the skill may have
+  created. Check browser extension directories and ~/.openclaw/skills/
+  for unexpected files.
+config_path: ""
+auto_fixable: false
+cwe: "CWE-506"
+references:
+  - https://snyk.io/blog/toxic-skills-ai-coding-tools/
+  - https://www.bitdefender.com/blog/labs/ai-supply-chain-attacks-2026/
+  - https://blog.koi.security/clawhavoc-campaign
+  - https://blog.barrack.ai/openclaw-security-vulnerabilities-2026/
+tags: [skill, malware, blocklist, infostealer, supply-chain]
+confidence: high
+check:
+  type: skill_blocklist
+  indicators:
+    # Authors from Snyk ToxicSkills study
+    authors:
+      # ClawHavoc campaign actors (cross-ref clawhavoc.yaml)
+      - "clawhub"
+      - "clawhub1"
+      - "clawhubb"
+      - "clawhubcli"
+      - "zaycv"
+      - "sakaen736jih"
+      # ToxicSkills study — infostealer distributors
+      - "devtools-official"
+      - "claw-extensions"
+      - "skillforge-ai"
+      - "code-helper-pro"
+      - "opentools-dev"
+      - "ai-workspace-utils"
+      - "smartclaw"
+      - "turbodev99"
+      # Bitdefender research — cryptominer campaigns
+      - "nodecrypto-tools"
+      - "blockchain-dev-kit"
+      - "web3-skill-pack"
+      - "defi-claw-utils"
+      - "gpu-compute-skill"
+      # Community-reported bad actors
+      - "xm1r"
+      - "0xdead_skill"
+      - "n0name-dev"
+      - "proxy-tunnel-skill"
+      - "ssh-manager-pro"
+    # Known C2 infrastructure
+    c2_ips:
+      # ClawHavoc C2
+      - "91.92.242.30"
+      # ToxicSkills infra (Snyk report)
+      - "185.196.8.91"
+      - "185.196.8.92"
+      - "45.155.205.100"
+      # Bitdefender cryptominer pools / C2
+      - "194.156.98.12"
+      - "194.156.98.13"
+      - "23.106.122.8"
+    domains:
+      - "glot.io"
+      - "skill-cdn.pages.dev"
+      - "clawstore.netlify.app"
+      - "update-service.skillforge.workers.dev"
+      - "telemetry.smartclaw.dev"
+    # Known malicious skill names
+    skill_names:
+      - "clawhub"
+      - "clawhubcli"
+      - "claw-crypto-wallet"
+      - "claw-youtube-dl"
+      - "workspace-sync-pro"
+      - "ai-code-optimizer"
+      - "smart-autocomplete"
+      - "gpu-miner-detector"
+      - "defi-portfolio-tracker"
+      - "ssh-key-manager"
+      - "env-backup-tool"
+      - "credential-vault"
