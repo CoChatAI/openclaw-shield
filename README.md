@@ -1,7 +1,10 @@
-# OpenClaw Carapace
+<div align="center">
+<img width="100" alt="carapace-logo" src="https://github.com/user-attachments/assets/75d23a40-7384-4d04-8620-7b8e65e2a2c3" />
+<h1>Carapace For OpenClaw</h1>
+The openclaw Security Advisor for [OpenClaw](https://openclaw.ai) gateways.
 
-**Security auditor for [OpenClaw](https://openclaw.ai) gateways.**
 Built by [CoChat](https://cochat.ai).
+</div>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/@cochatai/openclaw-carapace"><img src="https://img.shields.io/npm/v/@cochatai/openclaw-carapace?style=for-the-badge&color=d63031&label=npm" alt="npm version"></a>
@@ -18,6 +21,7 @@ Built by [CoChat](https://cochat.ai).
   <img src="https://img.shields.io/badge/skill_checks-6-8e44ad?style=flat-square" alt="6 skill checks">
   <img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square" alt="Node.js >= 18">
 </p>
+
 
 ---
 
