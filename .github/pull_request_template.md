@@ -31,8 +31,8 @@
 <!-- How did you verify this works? -->
 
 - [ ] `npm run build` passes
-- [ ] Tested with `openclaw-shield audit --config <test config>`
-- [ ] Tested with `openclaw-shield rules` (rule appears in list)
+- [ ] Tested with `openclaw-carapace audit --config <test config>`
+- [ ] Tested with `openclaw-carapace rules` (rule appears in list)
 
 ## Checklist
 

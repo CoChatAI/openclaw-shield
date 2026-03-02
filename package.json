@@ -1,12 +1,12 @@
 {
-  "name": "@cochatai/openclaw-shield",
-  "version": "0.1.1",
+  "name": "@cochatai/openclaw-carapace",
+  "version": "0.1.0",
   "description": "Security auditor and hardening tool for OpenClaw gateways",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "openclaw-shield": "dist/cli.js"
+    "openclaw-carapace": "dist/cli.js"
   },
   "files": [
     "dist",
@@ -38,11 +38,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cochatai/openclaw-shield.git"
+    "url": "https://github.com/cochatai/openclaw-carapace.git"
   },
-  "homepage": "https://github.com/cochatai/openclaw-shield",
+  "homepage": "https://github.com/cochatai/openclaw-carapace",
   "bugs": {
-    "url": "https://github.com/cochatai/openclaw-shield/issues"
+    "url": "https://github.com/cochatai/openclaw-carapace/issues"
   },
   "dependencies": {
     "chalk": "^5.3.0",

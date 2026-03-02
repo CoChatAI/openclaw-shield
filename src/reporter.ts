@@ -48,10 +48,10 @@ const LOBSTER = chalk.red(`
      \\_|_/
 `);
 
-const SHIELD_BANNER = `
+const CARAPACE_BANNER = `
 ${chalk.red.bold("   ┌─────────────────────────────┐")}
 ${chalk.red.bold("   │")}  ${chalk.white.bold("🦞  O P E N C L A W")}          ${chalk.red.bold("│")}
-${chalk.red.bold("   │")}  ${chalk.white.bold("    S H I E L D")}              ${chalk.red.bold("│")}
+${chalk.red.bold("   │")}  ${chalk.white.bold("    C A R A P A C E")}          ${chalk.red.bold("│")}
 ${chalk.red.bold("   └─────────────────────────────┘")}`;
 
 const SKILL_BANNER = `
@@ -61,10 +61,10 @@ ${chalk.red.bold("   └──────────────────�
 
 // Grade reactions — lobster-themed personality
 const GRADE_REACTION: Record<string, string> = {
-  A: "🦞 Shell integrity: maximum. This lobster is armored.",
-  B: "🦞 Pretty hard shell. A few soft spots to patch up.",
-  C: "🦞 Mid-molt. You're exposed — time to harden up.",
-  D: "🦞 Walking around without a shell. Fix this.",
+  A: "🦞 Carapace integrity: maximum. This lobster is armored.",
+  B: "🦞 Pretty hard carapace. A few soft spots to patch up.",
+  C: "🦞 Mid-molt. Your carapace is thin — time to harden up.",
+  D: "🦞 Walking around without a carapace. Fix this.",
   F: "🦞 You're basically a shrimp right now. Critical issues need immediate attention.",
 };
 
@@ -109,7 +109,7 @@ export function reportText(result: AuditResult): string {
   const gradeColor = GRADE_COLOR[result.grade] ?? chalk.white;
 
   // Banner
-  lines.push(SHIELD_BANNER);
+  lines.push(CARAPACE_BANNER);
   lines.push("");
 
   // Config info
@@ -232,15 +232,15 @@ export function reportSarif(result: AuditResult): string {
       {
         tool: {
           driver: {
-            name: "openclaw-shield",
-            informationUri: "https://github.com/CoChatAI/openclaw-shield",
-            version: "0.1.1",
+            name: "openclaw-carapace",
+            informationUri: "https://github.com/CoChatAI/openclaw-carapace",
+            version: "0.1.0",
             rules: result.findings.map((f) => ({
               id: f.id,
               shortDescription: { text: f.title },
               fullDescription: { text: f.description },
               helpUri:
-                "https://github.com/cochatai/openclaw-shield/blob/main/rules",
+                "https://github.com/cochatai/openclaw-carapace/blob/main/rules",
               defaultConfiguration: {
                 level: SARIF_SEV_MAP[f.severity] ?? "note",
               },

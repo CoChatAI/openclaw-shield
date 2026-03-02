@@ -13,7 +13,7 @@ body:
     attributes:
       label: What happened?
       description: Describe the bug clearly.
-      placeholder: "When I run `openclaw-shield audit`, it..."
+      placeholder: "When I run `openclaw-carapace audit`, it..."
     validations:
       required: true
 
@@ -31,7 +31,7 @@ body:
       label: Steps to reproduce
       description: How can we reproduce this?
       placeholder: |
-        1. Run `openclaw-shield audit --config ./my-config.json`
+        1. Run `openclaw-carapace audit --config ./my-config.json`
         2. See error...
     validations:
       required: true
@@ -46,8 +46,8 @@ body:
   - type: input
     id: version
     attributes:
-      label: Shield version
-      placeholder: "0.1.1"
+      label: Carapace version
+      placeholder: "0.1.0"
     validations:
       required: true
 

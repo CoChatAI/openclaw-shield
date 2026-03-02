@@ -2,7 +2,7 @@
 
 /**
  * Postinstall script — fetches advisory data from jgamblin/OpenClawCVEs
- * and caches it to ~/.openclaw-shield/cache/ so the first `audit` run
+ * and caches it to ~/.openclaw-carapace/cache/ so the first `audit` run
  * has vulnerability data available immediately.
  *
  * Failures are silent — this is a best-effort warm-up.
@@ -17,7 +17,7 @@ const GHSA_URL =
 const CVES_URL =
   "https://raw.githubusercontent.com/jgamblin/OpenClawCVEs/main/cves.json";
 
-const CACHE_DIR = join(homedir(), ".openclaw-shield", "cache");
+const CACHE_DIR = join(homedir(), ".openclaw-carapace", "cache");
 const GHSA_CACHE_FILE = join(CACHE_DIR, "ghsa-advisories.json");
 const CVES_CACHE_FILE = join(CACHE_DIR, "cves.json");
 
@@ -42,7 +42,7 @@ async function main() {
     ]);
 
     console.log(
-      `  🦞 openclaw-shield: cached ${ghsaCount} advisories and ${cveCount} CVEs`,
+      `  🦞 openclaw-carapace: cached ${ghsaCount} advisories and ${cveCount} CVEs`,
     );
   } catch {
     // Silent failure — network may not be available during install

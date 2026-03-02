@@ -1,4 +1,4 @@
-// openclaw-shield — Library exports for programmatic use
+// openclaw-carapace — Library exports for programmatic use
 
 export {
   loadRules,

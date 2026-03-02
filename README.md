@@ -1,10 +1,10 @@
-# OpenClaw Shield
+# OpenClaw Carapace
 
 **Security auditor for [OpenClaw](https://openclaw.ai) gateways.**
 Built by [CoChat](https://cochat.ai).
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@cochatai/openclaw-shield"><img src="https://img.shields.io/npm/v/@cochatai/openclaw-shield?style=for-the-badge&color=d63031&label=npm" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/@cochatai/openclaw-carapace"><img src="https://img.shields.io/npm/v/@cochatai/openclaw-carapace?style=for-the-badge&color=d63031&label=npm" alt="npm version"></a>
   <img src="https://img.shields.io/badge/rules-24-d63031?style=for-the-badge" alt="24 audit rules">
   <img src="https://img.shields.io/badge/CVEs-225+-8b0000?style=for-the-badge" alt="225+ advisories">
   <img src="https://img.shields.io/badge/license-MIT-blue?style=for-the-badge" alt="MIT License">
@@ -24,11 +24,11 @@ Built by [CoChat](https://cochat.ai).
 Run one command. See exactly what's wrong with your gateway and how to fix it.
 
 ```
-$ openclaw-shield audit
+$ openclaw-carapace audit
 
    ┌─────────────────────────────┐
    │  🦞  O P E N C L A W       │
-   │      S H I E L D            │
+   │      C A R A P A C E          │
    └─────────────────────────────┘
 
    Config:  /Users/dev/.openclaw/openclaw.json
@@ -89,12 +89,12 @@ $ openclaw-shield audit
    Run with --format sarif for GitHub Code Scanning
 ```
 
-Shield tells you what's wrong, why it matters, and exactly what to change. Most findings can be auto-fixed.
+Carapace tells you what's wrong, why it matters, and exactly what to change. Most findings can be auto-fixed.
 
 ## 📦 Install
 
 ```bash
-npm install -g @cochatai/openclaw-shield
+npm install -g @cochatai/openclaw-carapace
 ```
 
 Requires Node.js 18+. That's it.
@@ -103,7 +103,7 @@ Requires Node.js 18+. That's it.
 
 **Your config** -- 24 rules catch misconfigurations in authentication, sandboxing, tool permissions, exec approvals, filesystem restrictions, DM policies, and more. Each finding explains the risk and tells you the fix.
 
-**Known vulnerabilities** -- Shield fetches 80+ CVEs and advisories from [jgamblin/OpenClawCVEs](https://github.com/jgamblin/OpenClawCVEs) (updated hourly) and checks them against your gateway version. Works offline too.
+**Known vulnerabilities** -- Carapace fetches 80+ CVEs and advisories from [jgamblin/OpenClawCVEs](https://github.com/jgamblin/OpenClawCVEs) (updated hourly) and checks them against your gateway version. Works offline too.
 
 **Third-party skills** -- Scan any skill directory for hardcoded secrets, shell execution, network exfiltration, obfuscation, and known-malicious authors.
 
@@ -111,19 +111,19 @@ Requires Node.js 18+. That's it.
 
 ```bash
 # Audit your gateway (auto-discovers ~/.openclaw/openclaw.json)
-openclaw-shield audit
+openclaw-carapace audit
 
 # Point to a specific config
-openclaw-shield audit --config ./openclaw.json
+openclaw-carapace audit --config ./openclaw.json
 
 # Scan a skill before installing it
-openclaw-shield skill scan ./some-skill/ --author "skill-author"
+openclaw-carapace skill scan ./some-skill/ --author "skill-author"
 
 # See what hardening profiles are available
-openclaw-shield profiles list
+openclaw-carapace profiles list
 
 # Output SARIF for GitHub Code Scanning
-openclaw-shield audit --format sarif > results.sarif
+openclaw-carapace audit --format sarif > results.sarif
 ```
 
 ## 📊 Scoring
@@ -146,8 +146,8 @@ One critical finding drops you from A to B. The score makes risk visible at a gl
 We'd love your help. Whether it's a new audit rule, a better description for an existing finding, a blocklist update, or a bug fix -- contributions of any size are welcome.
 
 ```bash
-git clone https://github.com/cochatai/openclaw-shield.git
-cd openclaw-shield
+git clone https://github.com/cochatai/openclaw-carapace.git
+cd openclaw-carapace
 npm install
 npm run build
 node dist/cli.js audit --help
@@ -155,7 +155,7 @@ node dist/cli.js audit --help
 
 **Ways to contribute:**
 
-- Report a security misconfiguration we're not catching -- [open an issue](https://github.com/cochatai/openclaw-shield/issues)
+- Report a security misconfiguration we're not catching -- [open an issue](https://github.com/cochatai/openclaw-carapace/issues)
 - Add a new audit rule -- just create a YAML file in `rules/` (see [Writing Custom Rules](#writing-custom-rules) below)
 - Report a malicious skill or author -- add to `skills/blocklist/`
 - Improve finding descriptions -- clarity helps everyone
@@ -165,14 +165,14 @@ node dist/cli.js audit --help
 
 # 📖 Reference
 
-Everything below is detailed reference material. You don't need to read it to use Shield -- the output tells you what to do. But it's here when you need it.
+Everything below is detailed reference material. You don't need to read it to use Carapace -- the output tells you what to do. But it's here when you need it.
 
 ## ⌨️ CLI Reference
 
 ### `audit`
 
 ```
-openclaw-shield audit [options]
+openclaw-carapace audit [options]
 ```
 
 | Option                     | Description                                    | Default       |
@@ -187,7 +187,7 @@ openclaw-shield audit [options]
 ### `skill scan`
 
 ```
-openclaw-shield skill scan <path> [options]
+openclaw-carapace skill scan <path> [options]
 ```
 
 | Option               | Description                        | Default |
@@ -199,26 +199,26 @@ openclaw-shield skill scan <path> [options]
 ### `skill blocklist`
 
 ```
-openclaw-shield skill blocklist [--format text|json]
+openclaw-carapace skill blocklist [--format text|json]
 ```
 
 ### `profiles list` / `profiles show <id>`
 
 ```
-openclaw-shield profiles list
-openclaw-shield profiles show locked_down --format json
+openclaw-carapace profiles list
+openclaw-carapace profiles show locked_down --format json
 ```
 
 ### `patterns`
 
 ```
-openclaw-shield patterns [--format text|json]
+openclaw-carapace patterns [--format text|json]
 ```
 
 ### `rules`
 
 ```
-openclaw-shield rules [--format text|json] [--offline]
+openclaw-carapace rules [--format text|json] [--offline]
 ```
 
 ### Exit Codes
@@ -280,15 +280,15 @@ openclaw-shield rules [--format text|json] [--offline]
 
 ## 🐛 Vulnerability Scanning
 
-Shield fetches live advisory data from [jgamblin/OpenClawCVEs](https://github.com/jgamblin/OpenClawCVEs), a community-maintained repository updated hourly via GitHub Actions. This currently tracks **80+ advisories** with GHSA IDs, CVE IDs, CVSS scores, affected version ranges, and fixed versions.
+Carapace fetches live advisory data from [jgamblin/OpenClawCVEs](https://github.com/jgamblin/OpenClawCVEs), a community-maintained repository updated hourly via GitHub Actions. This currently tracks **80+ advisories** with GHSA IDs, CVE IDs, CVSS scores, affected version ranges, and fixed versions.
 
-Each advisory becomes a version check that fires when your `gateway.version` is below the fix version. Shield catches new vulnerabilities automatically as they're disclosed.
+Each advisory becomes a version check that fires when your `gateway.version` is below the fix version. Carapace catches new vulnerabilities automatically as they're disclosed.
 
-**Postinstall fetch:** When you `npm install`, Shield automatically fetches the latest advisory data so the first `audit` run has CVE coverage immediately.
+**Postinstall fetch:** When you `npm install`, Carapace automatically fetches the latest advisory data so the first `audit` run has CVE coverage immediately.
 
-**Cache:** Advisory data is cached to `~/.openclaw-shield/cache/` for 1 hour. Subsequent runs within that window don't hit the network.
+**Cache:** Advisory data is cached to `~/.openclaw-carapace/cache/` for 1 hour. Subsequent runs within that window don't hit the network.
 
-**Offline mode:** `--offline` skips network fetches and uses cached data. If no cache exists, Shield will warn you and skip vulnerability checks.
+**Offline mode:** `--offline` skips network fetches and uses cached data. If no cache exists, Carapace will warn you and skip vulnerability checks.
 
 ## 🔒 Hardening Profiles
 
@@ -301,7 +301,7 @@ Pre-built configuration patches that fix multiple findings at once.
 | `messaging_safe` | Messaging tools only. Denies all runtime, filesystem, and automation tools.                                                                                        |
 | `dm_hardened`    | Locks all channel DM policies to `pairing` and isolates sessions per channel+peer. Does not change tool settings.                                                  |
 
-Use `openclaw-shield profiles show <id> --format json` to see the exact config patch.
+Use `openclaw-carapace profiles show <id> --format json` to see the exact config patch.
 
 ## 🧱 Exec Firewall Patterns
 
@@ -337,7 +337,7 @@ Checks author name, skill name, file SHA-256 hashes, C2 IP addresses, and known 
 
 ## ⚙️ SARIF / CI Integration
 
-Shield outputs [OASIS SARIF 2.1.0](https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html) for GitHub Code Scanning, VS Code SARIF Viewer, and other tools.
+Carapace outputs [OASIS SARIF 2.1.0](https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html) for GitHub Code Scanning, VS Code SARIF Viewer, and other tools.
 
 ### GitHub Actions
 
@@ -352,13 +352,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Audit OpenClaw config
-        run: npx @cochatai/openclaw-shield audit --format sarif > openclaw-shield.sarif
+        run: npx @cochatai/openclaw-carapace audit --format sarif > openclaw-carapace.sarif
 
       - name: Upload SARIF
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          sarif_file: openclaw-shield.sarif
+          sarif_file: openclaw-carapace.sarif
 ```
 
 ## 💻 Programmatic Usage
@@ -371,7 +371,7 @@ import {
   buildAuditResult,
   readConfig,
   reportText,
-} from "@cochatai/openclaw-shield";
+} from "@cochatai/openclaw-carapace";
 
 const { config, path } = readConfig("./openclaw.json");
 
@@ -388,7 +388,7 @@ console.log(reportText(result));
 ### Custom Check Hooks
 
 ```typescript
-import { registerCustomCheck } from "@cochatai/openclaw-shield";
+import { registerCustomCheck } from "@cochatai/openclaw-carapace";
 
 registerCustomCheck("my_org_policy", (config) => {
   const findings = [];
@@ -416,7 +416,7 @@ import {
   loadSkillRules,
   loadSkillBlocklist,
   reportSkillScan,
-} from "@cochatai/openclaw-shield";
+} from "@cochatai/openclaw-carapace";
 
 const result = scanSkill("./my-skill", loadSkillRules(), loadSkillBlocklist(), {
   author: "some-author",
@@ -428,7 +428,7 @@ console.log(reportSkillScan(result));
 
 ## ✏️ Writing Custom Rules
 
-Rules are YAML files. Drop them in a directory, pass `--rules-dir`, and Shield picks them up.
+Rules are YAML files. Drop them in a directory, pass `--rules-dir`, and Carapace picks them up.
 
 ```yaml
 id: my_custom_rule

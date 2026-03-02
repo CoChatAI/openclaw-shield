@@ -3,3 +3,6 @@ contact_links:
   - name: 🦞 OpenClaw Documentation
     url: https://openclaw.ai/docs
     about: Check the OpenClaw docs for gateway configuration help
+  - name: 📦 npm Package
+    url: https://www.npmjs.com/package/@cochatai/openclaw-carapace
+    about: View the package on npm

@@ -30,11 +30,11 @@ import {
 const program = new Command();
 
 program
-  .name("openclaw-shield")
+  .name("openclaw-carapace")
   .description(
     "Security auditor, CVE checker, and skill scanner for OpenClaw gateways",
   )
-  .version("0.1.1");
+  .version("0.1.0");
 
 // ---------------------------------------------------------------------------
 // audit — config + vulnerability checks combined
@@ -169,7 +169,7 @@ skillCmd
       console.log(JSON.stringify(blocklist, null, 2));
     } else {
       console.log("");
-      console.log("  OpenClaw Shield Skill Blocklist");
+      console.log("  OpenClaw Carapace Skill Blocklist");
       console.log("");
       for (const entry of blocklist) {
         console.log(`  [${entry.severity}] ${entry.id}: ${entry.title}`);
