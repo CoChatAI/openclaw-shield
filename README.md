@@ -1,7 +1,7 @@
 <div align="center">
 <img width="100" alt="carapace-logo" src="https://github.com/user-attachments/assets/75d23a40-7384-4d04-8620-7b8e65e2a2c3" />
 <h1>Carapace For OpenClaw</h1>
-The openclaw Security Advisor for [OpenClaw](https://openclaw.ai) gateways.
+The openclaw Security Advisor for <a href="https://openclaw.ai">OpenClaw gateways</a>.
 
 Built by [CoChat](https://cochat.ai).
 </div>
