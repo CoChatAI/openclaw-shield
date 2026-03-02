@@ -27,8 +27,8 @@ Run one command. See exactly what's wrong with your gateway and how to fix it.
 $ openclaw-carapace audit
 
    ┌─────────────────────────────┐
-   │  🦞  O P E N C L A W       │
-   │      C A R A P A C E          │
+   │  🦞  O P E N C L A W        │
+   │      C A R A P A C E        │
    └─────────────────────────────┘
 
    Config:  /Users/dev/.openclaw/openclaw.json
