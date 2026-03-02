@@ -1,0 +1,64 @@
+name: 🚨 Blocklist Update
+description: Report a malicious skill, author, or campaign
+title: "[Blocklist] "
+labels: ["blocklist", "security", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help protect the community by reporting malicious skills. All reports are reviewed before being added.
+
+        **If this is an active, ongoing threat, please also email security@cochat.ai.**
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: What are you reporting?
+      options:
+        - Malicious skill
+        - Malicious author/publisher
+        - Malware campaign (multiple skills)
+        - Suspicious domain / C2 infrastructure
+    validations:
+      required: true
+
+  - type: textarea
+    id: indicators
+    attributes:
+      label: Indicators
+      description: Provide as many identifiers as you can — author names, skill names, URLs, IPs, file hashes, domains.
+      placeholder: |
+        Author: evil-dev-123
+        Skill: helpful-tool-totally-not-malware
+        Domain: exfil.example.com
+        IP: 192.168.1.100
+        SHA-256: abc123...
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence / analysis
+      description: What does the malicious code do? How did you discover it? Links to writeups, VirusTotal, etc.
+      placeholder: "The skill contains a base64-encoded payload in index.ts that..."
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Source (optional)
+      description: Where was this skill published? ClawHub URL, npm package, GitHub repo, etc.
+      placeholder: "https://clawhub.ai/skills/..."
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      options:
+        - Active threat — currently being distributed
+        - Known malicious — no longer actively distributed
+        - Suspicious — needs investigation
+    validations:
+      required: true

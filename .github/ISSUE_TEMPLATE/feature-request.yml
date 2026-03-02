@@ -1,0 +1,49 @@
+name: 💡 Feature Request
+description: Suggest an enhancement or new capability
+title: "[Feature] "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We'd love to hear your ideas for making Carapace more useful.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the use case or pain point
+      placeholder: "I want to be able to..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How do you think this should work?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered (optional)
+      description: Other approaches you thought about
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Config audit rules
+        - Vulnerability scanning
+        - Skill scanning
+        - CLI output / UX
+        - Hardening profiles
+        - Firewall patterns
+        - SARIF / CI integration
+        - Library API
+        - Other
+    validations:
+      required: true

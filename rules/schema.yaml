@@ -1,4 +1,4 @@
-# OpenClaw Shield Rule Schema v1
+# OpenClaw Carapace Rule Schema v1
 #
 # Each rule is a YAML file with the following structure.
 # Rules are loaded from rules/{severity}/*.yaml

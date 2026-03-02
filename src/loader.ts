@@ -97,20 +97,6 @@ export function loadProfiles(profilesDir?: string): HardeningProfile[] {
 }
 
 // ---------------------------------------------------------------------------
-// Vulnerability (CVE) loading
-// ---------------------------------------------------------------------------
-
-/**
- * Load vulnerability rules from static YAML files (fallback).
- * Prefer fetchAdvisoryRules() from advisory-fetcher.ts for live data.
- */
-export function loadVulnerabilities(vulnDir?: string): Rule[] {
-  const dir = resolveDir("vulnerabilities", vulnDir);
-  if (!existsSync(dir)) return [];
-  return loadYamlDir<Rule>(dir);
-}
-
-// ---------------------------------------------------------------------------
 // Skill security loading
 // ---------------------------------------------------------------------------
 

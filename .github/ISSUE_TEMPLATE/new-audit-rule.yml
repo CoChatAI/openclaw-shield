@@ -1,0 +1,69 @@
+name: 🛡️ New Audit Rule
+description: Suggest a new security check for gateway configurations
+title: "[Rule] "
+labels: ["new-rule", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping make OpenClaw gateways safer! Describe the misconfiguration you've found and we'll turn it into a rule.
+
+  - type: input
+    id: config_path
+    attributes:
+      label: Config path
+      description: The openclaw.json config key(s) involved
+      placeholder: "e.g. tools.exec.timeout or agents.defaults.sandbox.mode"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Suggested severity
+      options:
+        - Critical
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What's the risk?
+      description: Explain what happens when this config is set incorrectly. What can go wrong?
+      placeholder: "When X is set to Y, an attacker can..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: recommendation
+    attributes:
+      label: Recommended fix
+      description: What should the user change to fix this?
+      placeholder: "Set X to Y"
+    validations:
+      required: true
+
+  - type: textarea
+    id: check_logic
+    attributes:
+      label: Check logic (optional)
+      description: If you know the check type, describe or paste the YAML rule. See the README for available check types.
+      placeholder: |
+        id: my_rule
+        severity: high
+        check:
+          type: value_equals
+          path: some.config.key
+          value: expected_value
+      render: yaml
+
+  - type: checkboxes
+    id: auto_fixable
+    attributes:
+      label: Auto-fixable?
+      options:
+        - label: This can be auto-fixed by setting a specific config value

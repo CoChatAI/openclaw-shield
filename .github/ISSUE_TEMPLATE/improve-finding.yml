@@ -1,0 +1,53 @@
+name: ✏️ Improve Finding Description
+description: Make an existing rule's description, recommendation, or title clearer
+title: "[Docs] "
+labels: ["documentation", "rule-improvement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Good finding descriptions are everything. If a rule's output confused you or could be clearer, let us know.
+
+  - type: input
+    id: rule_id
+    attributes:
+      label: Rule ID
+      description: The rule you want to improve
+      placeholder: "e.g. sandbox.mode_off or firewall.inactive"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: what_to_improve
+    attributes:
+      label: What needs improving?
+      multiple: true
+      options:
+        - Title — unclear or misleading
+        - Description — doesn't explain the risk well
+        - Recommendation — fix instructions are confusing
+        - Severity — seems too high or too low
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current text
+      description: Paste the current output that's unclear
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested
+    attributes:
+      label: Suggested improvement
+      description: How would you rewrite it?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Why? (optional)
+      description: Any context on why the current text is confusing — were you a new user, did you misunderstand something?

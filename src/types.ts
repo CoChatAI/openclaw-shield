@@ -153,7 +153,11 @@ export interface RuleFix {
   [key: string]: unknown; // config.patch payload
 }
 
-export type RuleType = "misconfiguration" | "vulnerability" | "skill_check" | "skill_blocklist";
+export type RuleType =
+  | "misconfiguration"
+  | "vulnerability"
+  | "skill_check"
+  | "skill_blocklist";
 
 export interface Rule {
   id: string;
@@ -176,6 +180,9 @@ export interface Rule {
   cwe?: string; // e.g. "CWE-250"
   references?: string[];
   confidence?: "high" | "medium" | "low";
+  // Config rules: which CWEs fixing this rule mitigates
+  mitigates_cwes?: string[];
+  mitigates_label?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -191,14 +198,43 @@ export interface Finding {
   config_path: string;
   auto_fixable: boolean;
   points: number;
+  /** Rule type — "vulnerability" findings are scored separately */
+  rule_type?: RuleType;
+  /** CWEs this finding mitigates (config rules only) */
+  mitigates_cwes?: string[];
+  /** CWE associated with this finding (vuln rules) */
+  cwe?: string;
+  /** CVE ID (vuln rules) */
+  cve?: string;
+  /** Version that fixes this vulnerability */
+  fixed_in?: string;
   /** For iterate_map / url_check: which key triggered the finding */
   context?: string;
 }
 
+export interface VulnSummary {
+  total: number;
+  critical: number;
+  high: number;
+  medium: number;
+  low: number;
+  /** Earliest version that resolves all known advisories */
+  recommended_version?: string;
+}
+
 export interface AuditResult {
+  /** Config score (0-100) — based on misconfiguration findings only */
   score: number;
+  /** Config grade — A/B/C/D/F based on config score */
   grade: string;
+  /** All findings (config + vuln) */
   findings: Finding[];
+  /** Config findings only */
+  config_findings: Finding[];
+  /** Vulnerability findings only */
+  vuln_findings: Finding[];
+  /** Vulnerability exposure summary */
+  vuln_summary: VulnSummary;
   total_fixable_points: number;
   rules_evaluated: number;
   config_path: string;

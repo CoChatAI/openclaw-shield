@@ -31,7 +31,7 @@ const GHSA_URL =
 const CVES_URL =
   "https://raw.githubusercontent.com/jgamblin/OpenClawCVEs/main/cves.json";
 
-const CACHE_DIR = join(homedir(), ".openclaw-shield", "cache");
+const CACHE_DIR = join(homedir(), ".openclaw-carapace", "cache");
 const GHSA_CACHE_FILE = join(CACHE_DIR, "ghsa-advisories.json");
 const CVES_CACHE_FILE = join(CACHE_DIR, "cves.json");
 const CACHE_MAX_AGE_MS = 60 * 60 * 1000; // 1 hour

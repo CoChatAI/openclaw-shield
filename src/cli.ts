@@ -6,7 +6,6 @@ import {
   loadRules,
   loadPatterns,
   loadProfiles,
-  loadVulnerabilities,
   loadSkillRules,
   loadSkillBlocklist,
 } from "./loader.js";
@@ -14,6 +13,7 @@ import {
   fetchAdvisoryRules,
   loadCachedAdvisoryRules,
 } from "./advisory-fetcher.js";
+import type { Rule } from "./types.js";
 import { evaluateRules } from "./engine.js";
 import { scanSkill } from "./skill-scanner.js";
 import { buildAuditResult } from "./scorer.js";
@@ -30,11 +30,11 @@ import {
 const program = new Command();
 
 program
-  .name("openclaw-shield")
+  .name("openclaw-carapace")
   .description(
     "Security auditor, CVE checker, and skill scanner for OpenClaw gateways",
   )
-  .version("0.1.0");
+  .version("0.2.0");
 
 // ---------------------------------------------------------------------------
 // audit — config + vulnerability checks combined
@@ -65,25 +65,23 @@ program
       // Load config audit rules
       const rules = loadRules(opts.rulesDir);
 
-      // Load vulnerability rules — fetch live advisories or fall back to static YAML
-      let vulnRules: ReturnType<typeof loadVulnerabilities> = [];
+      // Load vulnerability rules — fetch live advisories or use cache
+      let vulnRules: Rule[] = [];
       if (opts.vulns !== false) {
         if (opts.offline) {
-          // Offline: try cache first, then static YAML
           vulnRules = loadCachedAdvisoryRules();
-          if (vulnRules.length === 0) {
-            vulnRules = loadVulnerabilities();
-          }
         } else {
           try {
             vulnRules = await fetchAdvisoryRules();
           } catch {
-            // Network failed — fall back to cache, then static YAML
+            // Network failed — fall back to cache
             vulnRules = loadCachedAdvisoryRules();
-            if (vulnRules.length === 0) {
-              vulnRules = loadVulnerabilities();
-            }
           }
+        }
+        if (vulnRules.length === 0 && opts.format === "text") {
+          console.error(
+            "  ⚠ No vulnerability data available. Run without --offline to fetch advisories.",
+          );
         }
       }
 
@@ -109,8 +107,10 @@ program
         console.log(reportText(result));
       }
 
-      const hasCritical = filtered.some((f) => f.severity === "critical");
-      const hasHigh = filtered.some((f) => f.severity === "high");
+      // Exit codes based on config findings only (vuln findings are informational)
+      const configFindings = result.config_findings;
+      const hasCritical = configFindings.some((f) => f.severity === "critical");
+      const hasHigh = configFindings.some((f) => f.severity === "high");
       if (hasCritical) process.exit(2);
       if (hasHigh) process.exit(1);
     } catch (err) {
@@ -171,7 +171,7 @@ skillCmd
       console.log(JSON.stringify(blocklist, null, 2));
     } else {
       console.log("");
-      console.log("  OpenClaw Shield Skill Blocklist");
+      console.log("  OpenClaw Carapace Skill Blocklist");
       console.log("");
       for (const entry of blocklist) {
         console.log(`  [${entry.severity}] ${entry.id}: ${entry.title}`);
@@ -258,16 +258,14 @@ program
   .option("--offline", "Don't fetch advisories from network")
   .action(async (opts) => {
     const configRules = loadRules(opts.rulesDir);
-    let vulnRules: ReturnType<typeof loadVulnerabilities>;
+    let vulnRules: Rule[];
     if (opts.offline) {
       vulnRules = loadCachedAdvisoryRules();
-      if (vulnRules.length === 0) vulnRules = loadVulnerabilities();
     } else {
       try {
         vulnRules = await fetchAdvisoryRules();
       } catch {
         vulnRules = loadCachedAdvisoryRules();
-        if (vulnRules.length === 0) vulnRules = loadVulnerabilities();
       }
     }
     const allRules = [...configRules, ...vulnRules];

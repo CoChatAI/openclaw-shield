@@ -13,7 +13,10 @@ import { SEVERITY_WEIGHTS as WEIGHTS } from "./types.js";
 // Config accessor: deep get by dot-path
 // ---------------------------------------------------------------------------
 
-export function getPath(config: Record<string, unknown>, path: string): unknown {
+export function getPath(
+  config: Record<string, unknown>,
+  path: string,
+): unknown {
   const keys = path.split(".");
   let current: unknown = config;
   for (const key of keys) {
@@ -36,7 +39,10 @@ function isTruthy(val: unknown): boolean {
   return true;
 }
 
-function evalValueEquals(config: Record<string, unknown>, check: { path: string; value: unknown; invert?: boolean }): CheckResult {
+function evalValueEquals(
+  config: Record<string, unknown>,
+  check: { path: string; value: unknown; invert?: boolean },
+): CheckResult {
   const actual = getPath(config, check.path);
   const matches = actual === check.value;
   // Default (invert=false): fires when value != expected
@@ -45,34 +51,49 @@ function evalValueEquals(config: Record<string, unknown>, check: { path: string;
   return { fires };
 }
 
-function evalValueInSet(config: Record<string, unknown>, check: { path: string; values: unknown[]; invert?: boolean }): CheckResult {
+function evalValueInSet(
+  config: Record<string, unknown>,
+  check: { path: string; values: unknown[]; invert?: boolean },
+): CheckResult {
   const actual = getPath(config, check.path);
   const inSet = check.values.includes(actual);
   const fires = check.invert ? inSet : !inSet;
   return { fires };
 }
 
-function evalValueNotInList(config: Record<string, unknown>, check: { path: string; value: unknown }): CheckResult {
+function evalValueNotInList(
+  config: Record<string, unknown>,
+  check: { path: string; value: unknown },
+): CheckResult {
   const list = getPath(config, check.path);
   if (!Array.isArray(list)) return { fires: true }; // list doesn't exist = value not in it
   return { fires: !list.includes(check.value) };
 }
 
-function evalTruthy(config: Record<string, unknown>, check: { path: string; invert?: boolean }): CheckResult {
+function evalTruthy(
+  config: Record<string, unknown>,
+  check: { path: string; invert?: boolean },
+): CheckResult {
   const val = getPath(config, check.path);
   const truthy = isTruthy(val);
   const fires = check.invert ? !truthy : truthy;
   return { fires };
 }
 
-function evalKeyExists(config: Record<string, unknown>, check: { path: string; invert?: boolean }): CheckResult {
+function evalKeyExists(
+  config: Record<string, unknown>,
+  check: { path: string; invert?: boolean },
+): CheckResult {
   const val = getPath(config, check.path);
   const exists = val !== undefined;
   const fires = check.invert ? !exists : exists;
   return { fires };
 }
 
-function evalStringLength(config: Record<string, unknown>, check: { path: string; min?: number; max?: number }): CheckResult {
+function evalStringLength(
+  config: Record<string, unknown>,
+  check: { path: string; min?: number; max?: number },
+): CheckResult {
   const val = getPath(config, check.path);
   if (typeof val !== "string") {
     // If no string found and min is set, fire (nothing to measure = too short)
@@ -83,7 +104,10 @@ function evalStringLength(config: Record<string, unknown>, check: { path: string
   return { fires: false };
 }
 
-function evalStringMatch(config: Record<string, unknown>, check: { path: string; pattern: string; invert?: boolean }): CheckResult {
+function evalStringMatch(
+  config: Record<string, unknown>,
+  check: { path: string; pattern: string; invert?: boolean },
+): CheckResult {
   const val = getPath(config, check.path);
   if (typeof val !== "string") return { fires: !!check.invert };
   const matches = new RegExp(check.pattern).test(val);
@@ -91,7 +115,10 @@ function evalStringMatch(config: Record<string, unknown>, check: { path: string;
   return { fires };
 }
 
-function evalCrossFieldCondition(config: Record<string, unknown>, cond: CrossFieldCondition): boolean {
+function evalCrossFieldCondition(
+  config: Record<string, unknown>,
+  cond: CrossFieldCondition,
+): boolean {
   const val = getPath(config, cond.path);
 
   switch (cond.op) {
@@ -100,9 +127,13 @@ function evalCrossFieldCondition(config: Record<string, unknown>, cond: CrossFie
     case "ne":
       return val !== cond.value;
     case "in":
-      return Array.isArray(cond.value) && (cond.value as unknown[]).includes(val);
+      return (
+        Array.isArray(cond.value) && (cond.value as unknown[]).includes(val)
+      );
     case "not_in":
-      return !Array.isArray(cond.value) || !(cond.value as unknown[]).includes(val);
+      return (
+        !Array.isArray(cond.value) || !(cond.value as unknown[]).includes(val)
+      );
     case "truthy":
       return isTruthy(val);
     case "falsy":
@@ -118,9 +149,14 @@ function evalCrossFieldCondition(config: Record<string, unknown>, cond: CrossFie
   }
 }
 
-function evalCrossField(config: Record<string, unknown>, check: { conditions: CrossFieldCondition[] }): CheckResult {
+function evalCrossField(
+  config: Record<string, unknown>,
+  check: { conditions: CrossFieldCondition[] },
+): CheckResult {
   // ALL conditions must be true for the rule to fire
-  const fires = check.conditions.every((c) => evalCrossFieldCondition(config, c));
+  const fires = check.conditions.every((c) =>
+    evalCrossFieldCondition(config, c),
+  );
   return { fires };
 }
 
@@ -166,24 +202,52 @@ function evalIterateMap(
 
 function evalScanKeys(
   config: Record<string, unknown>,
-  check: { path?: string; pattern: string; recursive?: boolean; value_truthy?: boolean },
+  check: {
+    path?: string;
+    pattern: string;
+    recursive?: boolean;
+    value_truthy?: boolean;
+  },
 ): CheckResult {
   const root = check.path ? getPath(config, check.path) : config;
   if (!root || typeof root !== "object") return { fires: false };
 
   const regex = new RegExp(check.pattern);
-  const found = scanKeysRecursive(root as Record<string, unknown>, regex, check.recursive ?? false, check.value_truthy ?? true);
+  const found = scanKeysRecursive(
+    root as Record<string, unknown>,
+    regex,
+    check.recursive ?? false,
+    check.value_truthy ?? true,
+  );
   return { fires: found };
 }
 
-function scanKeysRecursive(obj: Record<string, unknown>, regex: RegExp, recursive: boolean, valueTruthy: boolean): boolean {
+function scanKeysRecursive(
+  obj: Record<string, unknown>,
+  regex: RegExp,
+  recursive: boolean,
+  valueTruthy: boolean,
+): boolean {
   for (const [key, value] of Object.entries(obj)) {
     if (regex.test(key)) {
       if (valueTruthy && isTruthy(value)) return true;
       if (!valueTruthy) return true;
     }
-    if (recursive && value && typeof value === "object" && !Array.isArray(value)) {
-      if (scanKeysRecursive(value as Record<string, unknown>, regex, true, valueTruthy)) return true;
+    if (
+      recursive &&
+      value &&
+      typeof value === "object" &&
+      !Array.isArray(value)
+    ) {
+      if (
+        scanKeysRecursive(
+          value as Record<string, unknown>,
+          regex,
+          true,
+          valueTruthy,
+        )
+      )
+        return true;
     }
   }
   return false;
@@ -191,7 +255,12 @@ function scanKeysRecursive(obj: Record<string, unknown>, regex: RegExp, recursiv
 
 function evalUrlCheck(
   config: Record<string, unknown>,
-  check: { path: string; url_field: string; trusted_domains: string[]; skip_keys?: string[] },
+  check: {
+    path: string;
+    url_field: string;
+    trusted_domains: string[];
+    skip_keys?: string[];
+  },
 ): Finding[] {
   const map = getPath(config, check.path);
   if (!map || typeof map !== "object" || Array.isArray(map)) return [];
@@ -207,7 +276,9 @@ function evalUrlCheck(
     if (typeof url !== "string" || !url) continue;
 
     const urlLower = url.toLowerCase();
-    const trusted = check.trusted_domains.some((domain) => urlLower.includes(domain.toLowerCase()));
+    const trusted = check.trusted_domains.some((domain) =>
+      urlLower.includes(domain.toLowerCase()),
+    );
     if (!trusted) {
       findings.push({
         ...({} as Finding),
@@ -246,11 +317,21 @@ function evalVersionCompare(
   const cmp = compareVersions(actual, check.value);
   let fires = false;
   switch (check.operator) {
-    case "lt": fires = cmp < 0; break;
-    case "le": fires = cmp <= 0; break;
-    case "eq": fires = cmp === 0; break;
-    case "ge": fires = cmp >= 0; break;
-    case "gt": fires = cmp > 0; break;
+    case "lt":
+      fires = cmp < 0;
+      break;
+    case "le":
+      fires = cmp <= 0;
+      break;
+    case "eq":
+      fires = cmp === 0;
+      break;
+    case "ge":
+      fires = cmp >= 0;
+      break;
+    case "gt":
+      fires = cmp > 0;
+      break;
   }
   return { fires };
 }
@@ -259,7 +340,10 @@ function evalVersionCompare(
 // Main check dispatcher
 // ---------------------------------------------------------------------------
 
-function evaluateCheck(config: Record<string, unknown>, check: Check): CheckResult {
+function evaluateCheck(
+  config: Record<string, unknown>,
+  check: Check,
+): CheckResult {
   switch (check.type) {
     case "value_equals":
       return evalValueEquals(config, check);
@@ -302,8 +386,23 @@ export function registerCustomCheck(name: string, fn: CustomCheckFn): void {
   customChecks.set(name, fn);
 }
 
-export function evaluateRule(rule: Rule, config: Record<string, unknown>): Finding[] {
+/** Build the metadata fields common to all findings from a rule */
+function ruleMeta(rule: Rule): Partial<Finding> {
+  const meta: Partial<Finding> = {};
+  if (rule.type) meta.rule_type = rule.type;
+  if (rule.mitigates_cwes) meta.mitigates_cwes = rule.mitigates_cwes;
+  if (rule.cwe) meta.cwe = rule.cwe;
+  if (rule.cve) meta.cve = rule.cve;
+  if (rule.fixed_in) meta.fixed_in = rule.fixed_in;
+  return meta;
+}
+
+export function evaluateRule(
+  rule: Rule,
+  config: Record<string, unknown>,
+): Finding[] {
   const points = WEIGHTS[rule.severity] ?? 0;
+  const meta = ruleMeta(rule);
 
   // Multi-finding check types
   if (rule.check.type === "iterate_map") {
@@ -318,6 +417,7 @@ export function evaluateRule(rule: Rule, config: Record<string, unknown>): Findi
       auto_fixable: rule.auto_fixable,
       points,
       context: p.context,
+      ...meta,
     }));
   }
 
@@ -333,6 +433,7 @@ export function evaluateRule(rule: Rule, config: Record<string, unknown>): Findi
       auto_fixable: rule.auto_fixable,
       points,
       context: p.context,
+      ...meta,
     }));
   }
 
@@ -357,11 +458,15 @@ export function evaluateRule(rule: Rule, config: Record<string, unknown>): Findi
       auto_fixable: rule.auto_fixable,
       points,
       context: result.context,
+      ...meta,
     },
   ];
 }
 
-export function evaluateRules(rules: Rule[], config: Record<string, unknown>): Finding[] {
+export function evaluateRules(
+  rules: Rule[],
+  config: Record<string, unknown>,
+): Finding[] {
   const findings: Finding[] = [];
   for (const rule of rules) {
     try {

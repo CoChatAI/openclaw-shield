@@ -1,10 +1,9 @@
-// openclaw-shield — Library exports for programmatic use
+// openclaw-carapace — Library exports for programmatic use
 
 export {
   loadRules,
   loadPatterns,
   loadProfiles,
-  loadVulnerabilities,
   loadSkillRules,
   loadSkillBlocklist,
 } from "./loader.js";
@@ -40,6 +39,7 @@ export type {
   Check,
   Finding,
   AuditResult,
+  VulnSummary,
   Severity,
   HardeningProfile,
   PatternEntry,
