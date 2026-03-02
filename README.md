@@ -305,13 +305,13 @@ Use `openclaw-carapace profiles show <id> --format json` to see the exact config
 
 ## 🧱 Exec Firewall Patterns
 
-Two categories of patterns for real-time command interception:
+Carapace ships pattern definitions used by [CoChat's](https://cochat.ai) runtime exec firewall. The CLI doesn't run a firewall itself — it just lets you inspect the bundled patterns via `openclaw-carapace patterns`.
 
 **Dangerous (auto-deny, 20 patterns)** -- Destructive file ops (`rm -rf /`), credential theft (`cat ~/.ssh/`), remote code exec (`curl | sh`), system modification (`chmod 777`), network recon (`nmap`).
 
 **Suspicious (flag for review, 13 patterns)** -- HTTP requests (`curl`, `wget`), package installation (`pip install`, `npm install -g`), privilege escalation (`sudo`), container operations (`docker`), environment access (`printenv`, `history`).
 
-These are safety rails for the CoChat tool firewall, not security boundaries.
+These patterns are safety rails, not security boundaries — regex-based interception can be bypassed by a determined adversary.
 
 ## 🕵️ Skill Scanning
 
